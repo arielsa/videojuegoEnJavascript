@@ -45,18 +45,25 @@ function startGame (){
 
   game.font = (elementSize-9) + 'px Verdana';
   game.textAlign='end';
-  const map = maps[2];
+  const map = maps[0];
   const mapRows= map.trim().split('\n');
-  const mapCol=mapRows.map(row=>row.trim().split(''));
- 
+  const mapRowCol=mapRows.map(row=>row.trim().split(''));
 
-  for (let i = 1; i <=10; i++) {
-    for (let j = 1; j <=10; j++) {
-        let iconoLlave = mapCol[i-1][j-1]
-        game.fillText( emojis[iconoLlave] , (elementSize-1) * j  , (elementSize-1) * i);       
-    }
-    
-     
-  }       
+  mapRowCol.forEach((row,IndexRow) => {
+    row.forEach((col,indexCol)=>{
+        let llaveEmoji = col;
+        let renderEmoji = emojis[llaveEmoji];
+        let posicionY= (elementSize-1)*(IndexRow+1);
+        let posicionX=(elementSize-1)*(indexCol+1);
+        game.fillText(renderEmoji, posicionX, posicionY);        
+
+    })}); 
+    /////////////////////////////////////////////lo mismo que hacen los for each
+    //  for (let i = 1; i <=10; i++) {
+    //  for (let j = 1; j <=10; j++) {
+    //        let iconoLlave = mapRowCol[i-1][j-1]
+    //        game.fillText( emojis[iconoLlave] , (elementSize-1) * j  , (elementSize-1) * i);       
+    //    }    
+    //  }       
 }
 
