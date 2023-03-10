@@ -11,10 +11,10 @@ window.addEventListener('resize',canvasSize);
 function canvasSize (){
 
     if (window.innerHeight>window.innerWidth){
-        cuadrado = window.innerWidth*0.8;
+        cuadrado = window.innerWidth*0.75;
        // console.log(cuadrado + ' A alto superior');
     } else{
-        cuadrado = window.innerHeight*0.8;
+        cuadrado = window.innerHeight*0.75;
         //console.log(cuadrado + ' B ancho superior');
     }
     canvas.setAttribute('width',cuadrado);
@@ -41,13 +41,22 @@ function canvasSize (){
 }
 function startGame (){
    // game.fillRect(0,0,100,50)    
-  elementSize = (cuadrado /10)-1;
+  elementSize = (cuadrado /10);
 
-  game.font = elementSize + 'px Verdana';
-  game.textAlign='';  
+  game.font = (elementSize-9) + 'px Verdana';
+  game.textAlign='end';
+  const map = maps[2];
+  const mapRows= map.trim().split('\n');
+  const mapCol=mapRows.map(row=>row.trim().split(''));
+ 
 
-  for (let i = 0; i < 10; i++) {
-    game.fillText(emojis.W, elementSize * i , elementSize);    
+  for (let i = 1; i <=10; i++) {
+    for (let j = 1; j <=10; j++) {
+        let iconoLlave = mapCol[i-1][j-1]
+        game.fillText( emojis[iconoLlave] , (elementSize-1) * j  , (elementSize-1) * i);       
+    }
+    
+     
   }       
 }
 

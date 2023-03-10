@@ -1,15 +1,17 @@
 /*
  * Reglas:
  * El final de cada nivel debe ser el inicio del siguiente
- * 🔥☠️💥🏃🕺🏃‍♀️💃🧯💀
+ * 🔥☠️💥🏃🕺🏃‍♀️💃🧯💀💣🎁
 */
+
+var data ;
 
 const emojis = {
     '-': ' ',
     'O': '🚪',
-    'X': '💣',
-    'W':'🔥',
-    'I': '🎁',
+    'X': '🔥',
+    'W':'💣',
+    'I': '🧯',
     'PLAYER': '🏃 ',
     'BOMB_COLLISION': '💥',
     'GAME_OVER': '👎',
