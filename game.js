@@ -1,5 +1,12 @@
 const canvas = document.querySelector('#game');
-const game = canvas.getContext('2d');    
+const btnUp = document.querySelector('#up');
+const btnDown = document.querySelector('#down');
+const btnLeft = document.querySelector('#left');
+const btnRigth = document.querySelector('#rigth');
+
+
+const game = canvas.getContext('2d');
+
 
 let cuadrado;
 let elementSize;
@@ -7,6 +14,12 @@ let elementSize;
 
 window.addEventListener('load',canvasSize);
 window.addEventListener('resize',canvasSize);
+window.addEventListener('keydown',moveByKey);
+
+btnDown.addEventListener('click',moveDown);
+btnUp.addEventListener('click',moveUp);
+btnLeft.addEventListener('click',moveLeft);
+btnRigth.addEventListener('click',moveRigth);
 
 function canvasSize (){
 
@@ -67,3 +80,29 @@ function startGame (){
     //  }       
 }
 
+function moveByKey (event){
+   // console.log(event)
+
+    if (event.code == 'ArrowDown') moveDown();
+    if (event.code == 'ArrowUp') moveUp();
+    if (event.code == 'ArrowRight') moveRigth();
+    if (event.code == 'ArrowLeft') moveLeft();
+
+    if (event.key == 's' || event.key == 'S' ) moveDown();
+    if (event.key == 'w' || event.key == 'W' ) moveUp();
+    if (event.key == 'd' || event.key == 'D' ) moveRigth();
+    if (event.key == 'a' || event.key == 'A' ) moveLeft();
+}
+
+function moveDown (){
+    console.log('abajo');
+}
+function moveUp (){
+    console.log('arriba');
+}
+function moveLeft (){
+    console.log('izquierda');
+}
+function moveRigth (){
+    console.log('derecha');
+}
