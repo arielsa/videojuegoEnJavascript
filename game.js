@@ -6,6 +6,10 @@ const btnRigth = document.querySelector('#rigth');
 
 
 const game = canvas.getContext('2d');
+const playerPosition = {
+    x:undefined,
+    y:undefined,
+}
 
 
 let cuadrado;
@@ -52,6 +56,7 @@ function canvasSize (){
     }*/
 
 }
+
 function startGame (){
    // game.fillRect(0,0,100,50)    
   elementSize = (cuadrado /10);
@@ -62,13 +67,24 @@ function startGame (){
   const mapRows= map.trim().split('\n');
   const mapRowCol=mapRows.map(row=>row.trim().split(''));
 
+  game.clearRect(0,0,cuadrado,cuadrado);  
+
   mapRowCol.forEach((row,IndexRow) => {
     row.forEach((col,indexCol)=>{
         let llaveEmoji = col;
         let renderEmoji = emojis[llaveEmoji];
         let posicionY= (elementSize-1)*(IndexRow+1);
         let posicionX=(elementSize-1)*(indexCol+1);
-        game.fillText(renderEmoji, posicionX, posicionY);        
+
+        game.fillText(renderEmoji, posicionX, posicionY); 
+
+        if(llaveEmoji=='O'){
+            if( playerPosition.x == undefined && playerPosition.y == undefined){
+                playerPosition.x=posicionX;
+                playerPosition.y=posicionY;                
+            }           
+        }
+        movePlayer();      
 
     })}); 
     /////////////////////////////////////////////lo mismo que hacen los for each
@@ -78,6 +94,14 @@ function startGame (){
     //        game.fillText( emojis[iconoLlave] , (elementSize-1) * j  , (elementSize-1) * i);       
     //    }    
     //  }       
+}
+
+function movePlayer(){
+    console.log('x = '+playerPosition.x);
+    console.log('y = '+playerPosition.y);  
+
+    game.fillText(emojis['PLAYER'],playerPosition.x,playerPosition.y) 
+
 }
 
 function moveByKey (event){
@@ -96,13 +120,33 @@ function moveByKey (event){
 
 function moveDown (){
     console.log('abajo');
+
+    const limite = (elementSize-1) * 10;
+
+    if (playerPosition.y<limite) {playerPosition.y += (elementSize-1)}
+
+    startGame();
 }
 function moveUp (){
     console.log('arriba');
+
+    if (playerPosition.y>(elementSize-1)) {playerPosition.y -= (elementSize-1)}
+
+    startGame();
 }
 function moveLeft (){
     console.log('izquierda');
+
+    if (playerPosition.x>(elementSize-1)) {playerPosition.x -= (elementSize-1)}
+
+    startGame();
+
 }
 function moveRigth (){
     console.log('derecha');
+    const limite = (elementSize-1) * 10;
+
+    if (playerPosition.x<limite) {playerPosition.x += (elementSize-1)}
+
+    startGame();
 }
