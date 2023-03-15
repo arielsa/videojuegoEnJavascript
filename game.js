@@ -3,6 +3,7 @@ const btnUp = document.querySelector('#up');
 const btnDown = document.querySelector('#down');
 const btnLeft = document.querySelector('#left');
 const btnRigth = document.querySelector('#rigth');
+let vidasHtml = document.querySelector('#vidas');
 
 
 const game = canvas.getContext('2d');
@@ -78,13 +79,10 @@ function startGame (){
   
   let map = maps[nivel];////////////////////////////////
 
-
   if(!map){
     gameWin();
     return;
     }
-
-
 
   const mapRows= map.trim().split('\n');
   const mapRowCol=mapRows.map(row=>row.trim().split(''));
@@ -132,7 +130,16 @@ function startGame (){
     //        game.fillText( emojis[iconoLlave] , (elementSize-1) * j  , (elementSize-1) * i);       
     //    }    
     //  } 
-    movePlayer(); 
+    movePlayer();
+    mostrarVidas(); 
+}
+
+function mostrarVidas(){
+    let vidasrestantes= Array(vidas).fill(emojis['HEART']);
+    console.log(vidasrestantes);
+    vidasHtml.innerHTML = "";
+    vidasrestantes.forEach(corazon =>vidasHtml.append(corazon));
+    
 }
 
 function gameWin(){
@@ -171,12 +178,12 @@ function movePlayer(){
 }
 
 function perderUnaVida(){
-
+    vidas--;
     if(vidas<=0){
         nivel=0;
         vidas=3;
     }
-    vidas--;
+
     playerPosition.x=undefined;
     playerPosition.y=undefined;
     startGame();
