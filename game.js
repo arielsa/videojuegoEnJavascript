@@ -10,6 +10,12 @@ const playerPosition = {
     x:undefined,
     y:undefined,
 }
+const matafuegoPosition ={
+    x:undefined,
+    y:undefined,
+}
+
+let fuegoPosiciones=[];
 
 
 let cuadrado;
@@ -37,6 +43,8 @@ function canvasSize (){
     canvas.setAttribute('width',cuadrado);
     canvas.setAttribute('height',cuadrado);
 
+    
+
     startGame();    
     /*
     let ancho = window.innerWidth * 0.75;
@@ -61,6 +69,8 @@ function startGame (){
    // game.fillRect(0,0,100,50)    
   elementSize = (cuadrado /10);
 
+  fuegoPosiciones=[];
+
   game.font = (elementSize-9) + 'px Verdana';
   game.textAlign='end';
   const map = maps[0];
@@ -81,8 +91,23 @@ function startGame (){
         if(llaveEmoji=='O'){
             if( playerPosition.x == undefined && playerPosition.y == undefined){
                 playerPosition.x=posicionX;
-                playerPosition.y=posicionY;                
-            }           
+                playerPosition.y=posicionY;
+                //console.log('la posicion y es '+playerPosition.y);                
+            }      
+        }
+        if(llaveEmoji=='I'){
+            matafuegoPosition.x=posicionX;
+            matafuegoPosition.y=posicionY;
+        }
+        if(llaveEmoji=='X'){
+            let cordenadax=Number(posicionX);
+            let cordenaday=Number(posicionY);
+
+            fuegoPosiciones.push({
+                x:cordenadax,
+                y:cordenaday,                
+            });
+
         }
         movePlayer();      
 
@@ -97,8 +122,28 @@ function startGame (){
 }
 
 function movePlayer(){
-    console.log('x = '+playerPosition.x);
-    console.log('y = '+playerPosition.y);  
+
+    let cordenaday= Number (playerPosition.y);
+    let cordenadax= Number (playerPosition.x);
+    
+    let matafuegox= matafuegoPosition.x.toFixed(0) == cordenadax.toFixed(0);
+    let matafuegoy= matafuegoPosition.y.toFixed(0) == cordenaday.toFixed(0);
+    let matafuegoAlcanzado = matafuegox && matafuegoy;
+    
+    if(matafuegoAlcanzado){console.log('llegada');};
+
+    let colicion = fuegoPosiciones.find(fuego=>{
+        let fuegoX = fuego.x==cordenadax;
+        let fuegoY = fuego.y == cordenaday;
+        //console.log('cordenaday'+cordenaday.toFixed(0)+ 'fuego y'+ fuego.y.toFixed(0) );
+       // console.log('cordenadax'+cordenadax.toFixed(0)+ 'fuego x'+ fuego.x.toFixed(0) );
+        return fuegoX && fuegoY;
+    });
+
+    if (colicion){console.log('te quemaste');};
+
+    //console.log('x = '+playerPosition.x);
+    //console.log('y = '+playerPosition.y);  
 
     game.fillText(emojis['PLAYER'],playerPosition.x,playerPosition.y) 
 
@@ -130,14 +175,14 @@ function moveDown (){
 function moveUp (){
     console.log('arriba');
 
-    if (playerPosition.y>(elementSize-1)) {playerPosition.y -= (elementSize-1)}
+    if (playerPosition.y-(elementSize-1)>=(elementSize-1)) {playerPosition.y -= (elementSize-1)}
 
     startGame();
 }
 function moveLeft (){
     console.log('izquierda');
 
-    if (playerPosition.x>(elementSize-1)) {playerPosition.x -= (elementSize-1)}
+    if (playerPosition.x-(elementSize-1)>=(elementSize-1)) {playerPosition.x -= (elementSize-1)}
 
     startGame();
 
