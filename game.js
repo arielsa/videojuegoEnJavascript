@@ -20,6 +20,7 @@ let fuegoPosiciones=[];
 
 let cuadrado;
 let elementSize;
+let nivel = 0 ;
 
 
 window.addEventListener('load',canvasSize);
@@ -68,12 +69,22 @@ function canvasSize (){
 function startGame (){
    // game.fillRect(0,0,100,50)    
   elementSize = (cuadrado /10);
-
+  
   fuegoPosiciones=[];
 
   game.font = (elementSize-9) + 'px Verdana';
   game.textAlign='end';
-  const map = maps[0];
+  
+  let map = maps[nivel];////////////////////////////////
+
+
+  if(!map){
+    gameWin();
+    return;
+    }
+
+
+
   const mapRows= map.trim().split('\n');
   const mapRowCol=mapRows.map(row=>row.trim().split(''));
 
@@ -95,11 +106,11 @@ function startGame (){
                 //console.log('la posicion y es '+playerPosition.y);                
             }      
         }
-        if(llaveEmoji=='I'){
+        else if(llaveEmoji=='I'){
             matafuegoPosition.x=posicionX;
             matafuegoPosition.y=posicionY;
         }
-        if(llaveEmoji=='X'){
+        else if(llaveEmoji=='X'){
             let cordenadax=Number(posicionX);
             let cordenaday=Number(posicionY);
 
@@ -109,16 +120,23 @@ function startGame (){
             });
 
         }
-        movePlayer();      
+        
+            
 
-    })}); 
+    }             )       }); 
     /////////////////////////////////////////////lo mismo que hacen los for each
     //  for (let i = 1; i <=10; i++) {
     //  for (let j = 1; j <=10; j++) {
     //        let iconoLlave = mapRowCol[i-1][j-1]
     //        game.fillText( emojis[iconoLlave] , (elementSize-1) * j  , (elementSize-1) * i);       
     //    }    
-    //  }       
+    //  } 
+    movePlayer(); 
+}
+
+function gameWin(){
+    console.log('fin');
+    return;
 }
 
 function movePlayer(){
@@ -126,11 +144,12 @@ function movePlayer(){
     let cordenaday= Number (playerPosition.y);
     let cordenadax= Number (playerPosition.x);
     
-    let matafuegox= matafuegoPosition.x.toFixed(0) == cordenadax.toFixed(0);
-    let matafuegoy= matafuegoPosition.y.toFixed(0) == cordenaday.toFixed(0);
+    
+    let matafuegox= matafuegoPosition.x == cordenadax;
+    let matafuegoy= matafuegoPosition.y == cordenaday;
     let matafuegoAlcanzado = matafuegox && matafuegoy;
     
-    if(matafuegoAlcanzado){console.log('llegada');};
+   
 
     let colicion = fuegoPosiciones.find(fuego=>{
         let fuegoX = fuego.x==cordenadax;
@@ -140,13 +159,22 @@ function movePlayer(){
         return fuegoX && fuegoY;
     });
 
-    if (colicion){console.log('te quemaste');};
+    if (colicion){console.log('te quemaste');}; 
+    if(matafuegoAlcanzado){nivelSuperado(); console.log('nivel superado');}
 
     //console.log('x = '+playerPosition.x);
     //console.log('y = '+playerPosition.y);  
 
     game.fillText(emojis['PLAYER'],playerPosition.x,playerPosition.y) 
 
+}
+
+function nivelSuperado (){
+
+    nivel=nivel+1;
+    startGame();
+    
+    
 }
 
 function moveByKey (event){
@@ -178,6 +206,7 @@ function moveUp (){
     if (playerPosition.y-(elementSize-1)>=(elementSize-1)) {playerPosition.y -= (elementSize-1)}
 
     startGame();
+   
 }
 function moveLeft (){
     console.log('izquierda');
