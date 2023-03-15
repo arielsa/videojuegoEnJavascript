@@ -20,7 +20,8 @@ let fuegoPosiciones=[];
 
 let cuadrado;
 let elementSize;
-let nivel = 0 ;
+let nivel = 0;
+let vidas = 3;
 
 
 window.addEventListener('load',canvasSize);
@@ -159,13 +160,26 @@ function movePlayer(){
         return fuegoX && fuegoY;
     });
 
-    if (colicion){console.log('te quemaste');}; 
-    if(matafuegoAlcanzado){nivelSuperado(); console.log('nivel superado');}
+    if (colicion){perderUnaVida();}; 
+    if(matafuegoAlcanzado){nivelSuperado(); }
 
     //console.log('x = '+playerPosition.x);
     //console.log('y = '+playerPosition.y);  
 
     game.fillText(emojis['PLAYER'],playerPosition.x,playerPosition.y) 
+
+}
+
+function perderUnaVida(){
+
+    if(vidas<=0){
+        nivel=0;
+        vidas=3;
+    }
+    vidas--;
+    playerPosition.x=undefined;
+    playerPosition.y=undefined;
+    startGame();
 
 }
 
