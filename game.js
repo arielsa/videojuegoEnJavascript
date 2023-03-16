@@ -216,7 +216,7 @@ function movePlayer(){
         return fuegoX && fuegoY;
     });
 
-   // if (colicion){perderUnaVida();}; ///////////////////////////////////////////////////////////////////
+    if (colicion){perderUnaVida();}; ///////////////////////////////////////////////////////////////////
     if(matafuegoAlcanzado){nivelSuperado(); }
 
     //console.log('x = '+playerPosition.x);
