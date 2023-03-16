@@ -4,6 +4,10 @@ const btnDown = document.querySelector('#down');
 const btnLeft = document.querySelector('#left');
 const btnRigth = document.querySelector('#rigth');
 let vidasHtml = document.querySelector('#vidas');
+const tiempoHtml = document.querySelector('#tiempo');
+const record = document.querySelector('#record')
+const result = document.querySelector('#result')
+const btnreiniciar=document.querySelector('#reiniciar');
 
 
 const game = canvas.getContext('2d');
@@ -24,6 +28,10 @@ let elementSize;
 let nivel = 0;
 let vidas = 3;
 
+let tiempoInicio;
+let intervaloDeTiempo;
+let tiempoDeJuego;
+
 
 window.addEventListener('load',canvasSize);
 window.addEventListener('resize',canvasSize);
@@ -33,6 +41,8 @@ btnDown.addEventListener('click',moveDown);
 btnUp.addEventListener('click',moveUp);
 btnLeft.addEventListener('click',moveLeft);
 btnRigth.addEventListener('click',moveRigth);
+
+
 
 function canvasSize (){
 
@@ -82,6 +92,12 @@ function startGame (){
   if(!map){
     gameWin();
     return;
+    }
+
+    if (!tiempoInicio){
+        tiempoInicio=Date.now();
+        intervaloDeTiempo=setInterval(showTime,100);
+        showRecord();
     }
 
   const mapRows= map.trim().split('\n');
@@ -134,17 +150,50 @@ function startGame (){
     mostrarVidas(); 
 }
 
+function showTime(){
+
+    tiempoHtml.innerHTML = Date.now()-tiempoInicio;
+
+}
+
+function showRecord(){
+
+    record.innerHTML = localStorage.getItem('record_time');
+
+}
+
 function mostrarVidas(){
     let vidasrestantes= Array(vidas).fill(emojis['HEART']);
-    console.log(vidasrestantes);
+   // console.log(vidasrestantes);
     vidasHtml.innerHTML = "";
     vidasrestantes.forEach(corazon =>vidasHtml.append(corazon));
     
 }
 
-function gameWin(){
+function gameWin(){////////////////////////////////////////////////////////////////
     console.log('fin');
-    return;
+    clearInterval(intervaloDeTiempo);
+    const playerTime=Date.now()- tiempoInicio;
+
+    const tiempoRecord=localStorage.getItem('record_time');
+    console.log(tiempoRecord);
+    if(tiempoRecord){
+
+        
+        if(tiempoRecord>=playerTime){
+            localStorage.setItem('record_time',playerTime);
+            result.innerHTML='Record superado';
+           // mostrarReiniciar();
+        }else {
+            result.innerHTML='Record no superado';
+           // mostrarReiniciar();
+        }
+
+    }else{
+        result.innerHTML='Primer record'
+        localStorage.setItem('record_time',playerTime);
+       // mostrarReiniciar();
+    }
 }
 
 function movePlayer(){
@@ -167,7 +216,7 @@ function movePlayer(){
         return fuegoX && fuegoY;
     });
 
-    if (colicion){perderUnaVida();}; 
+   // if (colicion){perderUnaVida();}; ///////////////////////////////////////////////////////////////////
     if(matafuegoAlcanzado){nivelSuperado(); }
 
     //console.log('x = '+playerPosition.x);
@@ -182,6 +231,7 @@ function perderUnaVida(){
     if(vidas<=0){
         nivel=0;
         vidas=3;
+        tiempoInicio= undefined;
     }
 
     playerPosition.x=undefined;
@@ -245,3 +295,13 @@ function moveRigth (){
 
     startGame();
 }
+
+function mostrarReiniciar (){
+
+}
+
+function reiniciarJuego (){
+
+}
+
+
